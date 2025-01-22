@@ -6,7 +6,7 @@ import Button from '@/components/Button';
 
 
 const CartScreen = () => {
-  const {items, total} = useCart()
+  const {items, total, checkout} = useCart()
   return (
     <View style = {{padding: 10}}>
       <FlatList 
@@ -14,8 +14,8 @@ const CartScreen = () => {
         renderItem={({item}) => <CartListItem cartItem={item}/>}
         contentContainerStyle={{padding: 10, gap: 5}}
       />
-      <Text style={{marginTop: 20, fontSize: 20, fontWeight: '600' }}>Total: ${total}</Text>
-      <Button text='Checkout'/>
+      <Text style={{marginTop: 20, fontSize: 20, fontWeight: '600' }}>Total: ₦{total}</Text>
+      <Button  onPress={checkout}text='Checkout'/>
       <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'}/>
     </View>
   )

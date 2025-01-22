@@ -1,21 +1,31 @@
-import {View, Text, Image, StyleSheet, Pressable} from 'react-native'
+import { Text,  StyleSheet, Pressable} from 'react-native'
 import Colors from '@/constants/Colors';
-import { Link } from 'expo-router';
+import { Link, useSegments } from 'expo-router';
 
-import { Product } from '@/types';
+import RemoteImage from './RemoteImage';
 
-export const defaultPizzaimage = 'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/food/peperoni.png'
+import {  Tables } from '@/types';
+
+export const defaultPizzaImage = 'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/food/peperoni.png'
+
 type ProductListItemProps = {
-  product: Product;
+  product: Tables<'products'>;
 }
 
 const ProductListItem = ({product}: ProductListItemProps ) => {
+  const segments = useSegments();
+  
   return (
     <Link href={`/menu/${product.id}`} asChild>
     <Pressable style={styles.container}>
-        <Image resizeMode='contain' source={{uri: product.image || defaultPizzaimage}} style={styles.image}/>
+              <RemoteImage
+                fallback={defaultPizzaImage}
+                path={product.image ?? undefined}
+                style={styles.image}
+                resizeMode="contain"
+              />
         <Text style={styles.title}>{product.name}</Text>
-        <Text style={styles.price}>${product.price}</Text>
+        <Text style={styles.price}>₦{product.price}</Text>
       </Pressable>
       </Link>
     )

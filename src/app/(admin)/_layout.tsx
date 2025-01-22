@@ -1,7 +1,8 @@
 import React from 'react';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { Link, Tabs } from 'expo-router';
-import { Pressable } from 'react-native';
+import { Tabs, Redirect } from 'expo-router';
+import { useAuth } from '@/providers/AuthProvider';
+
 
 import Colors from '@/constants/Colors';
 import { useColorScheme } from '@/components/useColorScheme';
@@ -17,14 +18,21 @@ function TabBarIcon(props: {
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
+  const {isAdmin} = useAuth()
+
+  if(!isAdmin){
+     return <Redirect href={'/'}/>
+  }
 
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+        tabBarActiveTintColor: Colors.light.background,
+        tabBarInactiveTintColor: 'gainsboro',
         // Disable the static render of the header on web
         // to prevent a hydration error in React Navigation v6.
         headerShown: useClientOnlyValue(false, true),
+        tabBarStyle:{ backgroundColor: Colors.light.tint}
       }}>
       <Tabs.Screen name='index' options={{href: null, title: 'Menu'}}/>
       <Tabs.Screen
@@ -36,9 +44,10 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="two"
+        name="orders"
         options={{
           title: 'Order',
+          headerShown: false,
           tabBarIcon: ({ color }) => <TabBarIcon name="list" color={color} />,
         }}
       />
